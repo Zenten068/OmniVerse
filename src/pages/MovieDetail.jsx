@@ -9,6 +9,7 @@ import {
   ArrowLeft, Loader2, Film, Tv, ExternalLink, Heart, MonitorPlay
 } from 'lucide-react';
 import MovieCard from '../components/MovieCard';
+import VidKingPlayer from '../components/VidKingPlayer';
 import toast from 'react-hot-toast';
 
 export default function MovieDetail() {
@@ -152,9 +153,25 @@ export default function MovieDetail() {
                 </div>
               )}
               {director && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                  <Film size={16} /> Dir. {director.name}
-                </div>
+                <Link
+                  to={`/actor/${director.id}`}
+                  style={{ textDecoration: 'none' }}
+                  id="detail-director-link"
+                >
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: '0.4rem',
+                    color: 'var(--accent)', fontSize: '0.9rem',
+                    cursor: 'pointer', transition: 'opacity 0.2s',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.opacity = '0.75'}
+                    onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+                  >
+                    <Film size={16} /> Dir.&nbsp;<span style={{ fontWeight: 600, textDecoration: 'underline', textDecorationColor: 'transparent', transition: 'text-decoration-color 0.2s' }}
+                      onMouseEnter={e => e.currentTarget.style.textDecorationColor = 'var(--accent)'}
+                      onMouseLeave={e => e.currentTarget.style.textDecorationColor = 'transparent'}
+                    >{director.name}</span>
+                  </div>
+                </Link>
               )}
             </div>
 
@@ -165,21 +182,40 @@ export default function MovieDetail() {
             )}
 
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => {
+                  const el = document.getElementById('vidking-player-section');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="btn-accent"
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.75rem 1.6rem', borderRadius: 10, fontSize: '0.9rem',
+                  fontWeight: 700, boxShadow: '0 0 20px rgba(0, 200, 150, 0.4)', cursor: 'pointer',
+                }}
+                id="detail-watch-now-btn"
+              >
+                <Play size={18} fill="#0a0a0f" /> Watch Now
+              </button>
               {trailerKey && (
                 <button
                   onClick={() => setShowTrailer(true)}
-                  className="btn-accent"
-                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem', borderRadius: 10, fontSize: '0.9rem' }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.5rem',
+                    padding: '0.75rem 1.25rem', borderRadius: 10, fontSize: '0.9rem',
+                    background: 'var(--bg-elevated)', border: '1px solid var(--border)',
+                    color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 600,
+                  }}
                   id="detail-trailer-btn"
                 >
-                  <Play size={17} fill="currentColor" /> Watch Trailer
+                  <Film size={17} /> Watch Trailer
                 </button>
               )}
               <button
                 onClick={handleWatchlist}
                 style={{
                   display: 'flex', alignItems: 'center', gap: '0.5rem',
-                  padding: '0.75rem 1.5rem', borderRadius: 10, fontSize: '0.9rem',
+                  padding: '0.75rem 1.25rem', borderRadius: 10, fontSize: '0.9rem',
                   fontWeight: 600, cursor: 'pointer',
                   background: inWatchlist ? 'var(--accent-dim)' : 'var(--bg-elevated)',
                   border: `1px solid ${inWatchlist ? 'var(--accent)' : 'var(--border)'}`,
@@ -215,6 +251,15 @@ export default function MovieDetail() {
           </div>
         </div>
 
+        {/* Integrated VidKing Video Player */}
+        <VidKingPlayer
+          tmdbId={data.id}
+          isTV={isTV}
+          seasons={data.seasons || []}
+          title={title}
+          posterPath={data.poster_path}
+        />
+
         {cast.length > 0 && (
           <section style={{ marginTop: '3rem' }}>
             <h2 style={{ fontFamily: 'Outfit', fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -222,28 +267,41 @@ export default function MovieDetail() {
             </h2>
             <div className="scroll-row" style={{ paddingBottom: '0.75rem' }}>
               {cast.map(person => (
-                <div key={person.id} style={{
-                  flexShrink: 0, width: 110,
-                  background: 'var(--bg-card)', border: '1px solid var(--border)',
-                  borderRadius: 12, overflow: 'hidden', textAlign: 'center',
-                  transition: 'transform 0.2s',
-                }}
-                  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
-                  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+                <Link
+                  key={person.id}
+                  to={`/actor/${person.id}`}
+                  style={{ textDecoration: 'none', flexShrink: 0 }}
                 >
-                  {person.profile_path ? (
-                    <img src={`${IMAGE_BASE}/w185${person.profile_path}`} alt={person.name}
-                      style={{ width: '100%', aspectRatio: '2/3', objectFit: 'cover' }} loading="lazy" />
-                  ) : (
-                    <div style={{ width: '100%', aspectRatio: '2/3', background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Users size={28} color="var(--text-muted)" />
+                  <div style={{
+                    width: 110,
+                    background: 'var(--bg-card)', border: '1px solid var(--border)',
+                    borderRadius: 12, overflow: 'hidden', textAlign: 'center',
+                    transition: 'transform 0.2s, border-color 0.2s',
+                    cursor: 'pointer',
+                  }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                      e.currentTarget.style.borderColor = 'var(--accent)';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.borderColor = 'var(--border)';
+                    }}
+                  >
+                    {person.profile_path ? (
+                      <img src={`${IMAGE_BASE}/w185${person.profile_path}`} alt={person.name}
+                        style={{ width: '100%', aspectRatio: '2/3', objectFit: 'cover' }} loading="lazy" />
+                    ) : (
+                      <div style={{ width: '100%', aspectRatio: '2/3', background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Users size={28} color="var(--text-muted)" />
+                      </div>
+                    )}
+                    <div style={{ padding: '0.5rem' }}>
+                      <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--accent)', lineHeight: 1.3 }}>{person.name}</div>
+                      <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: 2 }}>{person.character}</div>
                     </div>
-                  )}
-                  <div style={{ padding: '0.5rem' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.3 }}>{person.name}</div>
-                    <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: 2 }}>{person.character}</div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </section>

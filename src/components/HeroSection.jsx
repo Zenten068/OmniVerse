@@ -137,11 +137,12 @@ export default function HeroSection({ items = [] }) {
               style={{
                 display: 'flex', alignItems: 'center', gap: '0.5rem',
                 padding: '0.75rem 1.5rem', borderRadius: '10px',
-                textDecoration: 'none', fontSize: '0.9rem',
+                textDecoration: 'none', fontSize: '0.9rem', fontWeight: 700,
+                boxShadow: '0 0 20px rgba(0, 200, 150, 0.4)',
               }}
-              id={`hero-details-${item.id}`}
+              id={`hero-watch-${item.id}`}
             >
-              <Info size={17} /> View Details
+              <Play size={18} fill="#0a0a0f" /> Watch Now
             </Link>
             <button
               onClick={handleWatchlist}

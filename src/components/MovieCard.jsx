@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToWatchlist, removeFromWatchlist, selectIsInWatchlist } from '../features/watchlist/watchlistSlice';
 import { selectIsAuthenticated } from '../features/auth/authSlice';
 import { POSTER_MD } from '../api/tmdb';
-import { Bookmark, BookmarkCheck, Star, Film, Tv } from 'lucide-react';
+import { Bookmark, BookmarkCheck, Star, Film, Tv, Play } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function MovieCard({ item, size = 'md' }) {
@@ -75,7 +75,16 @@ export default function MovieCard({ item, size = 'md' }) {
           </div>
         )}
 
-        <div className="card-overlay" />
+        <div className="card-overlay">
+          <div className="card-play-btn" style={{
+            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+            width: 44, height: 44, borderRadius: '50%',
+            background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 0 20px rgba(0, 200, 150, 0.6)', transition: 'transform 0.2s ease',
+          }}>
+            <Play size={20} fill="#0a0a0f" color="#0a0a0f" style={{ marginLeft: 3 }} />
+          </div>
+        </div>
 
         <div style={{ position: 'absolute', top: 8, left: 8 }}>
           <span className="badge badge-accent">{isTV ? 'TV' : 'Movie'}</span>

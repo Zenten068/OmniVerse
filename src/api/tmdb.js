@@ -40,6 +40,10 @@ export const getTVDetails = (id) =>
     params: { append_to_response: 'credits,videos,similar,watch/providers' },
   });
 
+export const getTVSeasonDetails = (id, seasonNumber) =>
+  tmdb.get(`/tv/${id}/season/${seasonNumber}`);
+
+
 export const searchMulti = (query, page = 1) =>
   tmdb.get('/search/multi', { params: { query, page, include_adult: false } });
 
@@ -65,5 +69,11 @@ export const discoverTV = ({ page = 1, genre = '', sortBy = 'popularity.desc' } 
 
 export const getGenres = (mediaType = 'movie') =>
   tmdb.get(`/genre/${mediaType}/list`);
+
+export const getPersonDetails = (personId) =>
+  tmdb.get(`/person/${personId}`);
+
+export const getPersonCredits = (personId) =>
+  tmdb.get(`/person/${personId}/combined_credits`);
 
 export default tmdb;

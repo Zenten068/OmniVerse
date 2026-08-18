@@ -242,3 +242,7 @@ body {
 .card-hover:hover .card-overlay {
   opacity: 1;
 }
+
+.card-hover:hover .card-play-btn {
+  transform: translate(-50%, -50%) scale(1.15) !important;
+}

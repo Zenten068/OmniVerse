@@ -14,6 +14,7 @@ const Search = lazy(() => import('./pages/Search'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
 const Watchlist = lazy(() => import('./pages/Watchlist'));
 const Login = lazy(() => import('./pages/Login'));
+const ActorPage = lazy(() => import('./pages/ActorPage'));
 
 const PageLoader = () => (
   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
@@ -40,6 +41,7 @@ export default function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/movie/:id" element={<MovieDetail />} />
             <Route path="/tv/:id" element={<MovieDetail />} />
+            <Route path="/actor/:id" element={<ActorPage />} />
             <Route path="/login" element={<Login />} />
             <Route
               path="/watchlist"
