@@ -2,6 +2,10 @@
 
 OmniVerse is a modern, responsive media discovery and tracking web application. It allows users to explore trending movies, popular TV shows, and new animations. Powered by the TMDB API, OmniVerse provides a seamless experience for discovering your next favorite watch and managing your personalized watchlist.
 
+## Site link - [Omniverse](https://omni-verse-drab.vercel.app/)
+
+![screenshot](https://github.com/Zenten068/OmniVerse/blob/main/Output.png)
+
 ## 🌟 Key Features
 
 - **Media Discovery**: Browse through trending, top-rated, and popular movies and TV shows.
@@ -33,7 +37,7 @@ Follow these instructions to set up the project locally on your machine.
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repository-url>
+   git clone https://github.com/Zenten068/OmniVerse.git
    cd Omniverse
    ```
 
